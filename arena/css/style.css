@@ -1,0 +1,30 @@
+html,body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+h1,h2,h3,h4,h5,h6,ul {
+  margin: 0;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between
+}
+
+nav li {
+  display: inline-block;
+}
+
+nav li a {
+  text-decoration: none;
+  color: inherit;
+}
+
+header {
+  color: white;
+  background-color: hsla(100, 30%, 40%, 1)
+}
