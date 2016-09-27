@@ -4,6 +4,8 @@ html,body {
 
 body {
   margin: 0;
+  background-image: url(../imgs/cavern.jpg);
+  background-position: center bottom;
 }
 
 h1,h2,h3,h4,h5,h6,ul {
@@ -12,19 +14,110 @@ h1,h2,h3,h4,h5,h6,ul {
 
 nav {
   display: flex;
-  justify-content: space-between
+  justify-content: space-between;
+  padding: 10px;
 }
 
 nav li {
   display: inline-block;
 }
 
+nav ul {
+  display: flex;
+  align-items: center;
+}
+
 nav li a {
   text-decoration: none;
   color: inherit;
+  padding: 10px;
+  border: 1px solid white;
+  border-radius: 3px;
+  background-color: hsla(0, 0%, 100%, .25);
+  margin-left: 10px;
+}
+
+#table {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0 30px;
+}
+
+table {
+  background-color: hsla(0, 0%, 100%, .5);
+  box-shadow: 0 0 0 10px;
+}
+
+table td {
+  width: 5vw;
+  height: 5vw;
+  background-color: white;
+}
+
+#text {
+  padding: 30px 0;
+}
+
+form {
+  width: 50%;
+  margin: 0 auto;
+}
+
+textarea{
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#hud {
+  display: flex;
+}
+
+#hud div {
+  flex: 1;
+}
+
+.inventory {
+  color: white;
+  text-align: center;
+}
+
+.inventory li {
+  padding: 5px 10px;
+  background-color: hsla(0, 0%, 9%, .75);
+  margin: 0 10px 10px 0;
+  list-style: none;
+  border: 1px solid white;
+}
+
+.inventory ul {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 header {
   color: white;
   background-color: hsla(100, 30%, 40%, 1)
+}
+
+.nav span {
+  display: flex;
+  justify-content: center;
+}
+
+.nav span:nth-child(2){
+  justify-content: space-around;
+  background-image: url(../imgs/compass.png);
+  background-position: center;
+  background-size:  40px;
+  background-repeat: no-repeat;
+  justify-content: space-around;
+}
+
+.nav a {
+  text-decoration: none;
+  color: black;
+  background-color: black;
+  padding: 10px 20px;
+  border: 1px solid black;
+  margin: 5px;
 }
