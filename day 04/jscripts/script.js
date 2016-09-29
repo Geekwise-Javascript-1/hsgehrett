@@ -23,6 +23,8 @@ max()
 pow()
 */
 
+
+/* RNG jscript
 var randNum = Math.random();
 var roundNum = Math.round(randNum);
 var floorNum = Math.floor(randNum);
@@ -66,8 +68,62 @@ var pName = fName.concat("").concat(lName);
 
 console.log(fName.trim());
 */
+
+/* weird name thing
+
 var fName = prompt("What's your first name?");
 var lName = prompt("What's your last name?");
+fName = fName.toLowerCase();
+console.log(fName.substring(fName.charAt(0).toUpperCase().concat(fName.substring(1, 255))));
+fName = lName.toLowerCase();
+console.log(lName.charAt(0).toUpperCase().concat(lName.substring(1, 255))));
+var pName = (fName.concat("").concat(lName));
+alert(pName); */
 
-var pName = fName.concat("").concat(lName);
-alert(pName);
+/* var food = "linux mint";
+
+  if(food == "apple"){
+    console.log("it's true");
+  }else if(food == windows){
+    console.log("windows is true");
+  }else{
+    console.log("it's false");
+  }*/
+
+/* var num1 = prompt("Pick a number!");
+
+num1 = parseInt(num1);
+
+//&& = and
+//|| = or
+
+  if(num1 > "3"){
+    console.log(">");
+  }else if(num1 === "3"){
+    console.log("=");
+  }else{
+    console.log("<");
+  }
+ */
+
+/* Drinking Age and Gender prompt example
+
+ var ageDrink = prompt("How old are you?");
+ var genderDrink = prompt ("and your Gender?");
+
+ ageDrink = parseInt(ageDrink);
+
+ if(ageDrink >= "21" && genderDrink === "male"){
+   console.log("Back in line, bud.");
+ }else if(ageDrink >= "21" && genderDrink === "female"){
+   console.log("You're in for free.");
+ }else{
+   console.log("You're too young, go home.");
+ }
+*/
+
+/* Ternary Operator
+var = prompt("What's your age again?")
+
+(num >= 21)? console.log("Can enter.") : console.log("Denied Eentry, too young.");
+ */
