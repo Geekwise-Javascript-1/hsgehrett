@@ -53,7 +53,7 @@ switch(new Date().getMonth()){
 }
 console.log(date);*/
 
-/*Arrays - Fruit Example*/
+/*Arrays - Fruit Example
 var fruits = ["banana","apple","orange","mango"];
 console.log(fruits)
 fruits.push("kiwi"); //   #### push to add element ####
@@ -83,9 +83,15 @@ fruits.sort();
 //var nums = ["b", "4", "5", "45", "a", "451"];       // #### DOES NOT SORT IN HUMAN WAYS,
 //console.log(nums.sort());                          //  THIS IS BASED ON NUMERICAL VALUES ####
 
-for(var  i = 0; i < 100; i++){
-  if(i % 3 == 0){
+for(var  i = 1; i < 100; i++){
+  if(i % 15 == 0){
+    console.log("fizzbuzz");
+  }else if(i % 3 == 0){
     console.log("fizz");
+  }else if(i % 5 == 0){
+    console.log("buzz");
+  }else {
+    console.log(i);
   }
 }
 
@@ -93,9 +99,18 @@ for(var  i = 0; i < 100; i++){
 /*while(i < fruits.length){
   console.log(fruits[i]);      // #### commented after experimenting with output and seeing if it gives
   i++;                         // a proper listed result ####
-}*/
+}
 
 /*do{
   console.log(fruits[i]);
   i++;                              //ignore this; they couldn't figure out how it broke
 }while(fruits[i](i !== "orange"));*/
+
+/*Functions
+
+function printMyName(uName = prompt("What's your name?")){ // #### <-- string goes here ####
+  console.log(uName);                                      // #### <-- variable established here ####
+}
+
+printMyName();
+*/
