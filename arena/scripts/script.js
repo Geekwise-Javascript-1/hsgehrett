@@ -1,4 +1,4 @@
-//console.log('hello world!');
+/* Useless precode stuff
 var fName="Snow";
 var lName="Gehrett";
 var age=19;
@@ -27,12 +27,12 @@ console.log(car.model);
 // array
 // object
 
-var hobby="Arena FPS Games";
+var hobby="Arena FPS Games";*/
 
 /*alert("First and Last Name: " + fName + " " + lName + ", Age: " + age +
  ", Hobby: " + hobby);*/
 
-var uName=prompt("What is your name, stranger?");
+/*var uName=prompt("What is your name, stranger?");
 console.log(uName);
 alert(uName);
 
@@ -42,3 +42,59 @@ alert(pWord);
 
 var plAge=prompt("How old are you, stranger?");
 console.log(parseInt(plAge));
+*/
+
+/*Movement*/
+
+var n = document.getElementById("n");
+var e = document.getElementById("e");
+var s = document.getElementById("s");
+var w = document.getElementById("w");
+
+n.addEventListener("click", function(evt){
+  moveNorth(evt);
+});
+function moveNorth(evt){
+  console.log(evt);
+  console.log("Went North.");
+}
+
+e.addEventListener("click", function(evt){
+  moveEast(evt);
+});
+function moveEast(evt){
+  console.log(evt);
+  console.log("Went East.");
+}
+
+s.addEventListener("click", function(evt){
+  moveSouth(evt);
+});
+function moveSouth(evt){
+  console.log(evt);
+  console.log("Went South.");
+}
+
+w.addEventListener("click", function(evt){
+  moveWest(evt);
+});
+function moveWest(evt){
+  console.log(evt);
+  console.log("Went West.");
+}
+
+/*Grid*/
+
+var grid = function(x, y){
+  var totalCells = x * y;
+  var cells = [];
+  var unvisited = [];
+
+    for(var i = 0; i < y; i++){
+      cells[i] = [];
+      unvisited[i] = [];
+        for(var j = 0; j < x; j++){
+          cells[i][j] = [0, 0, 0, 0];
+        }
+    }
+}(9, 9);
