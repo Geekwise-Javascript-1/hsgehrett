@@ -95,6 +95,35 @@ var grid = function(x, y){
       unvisited[i] = [];
         for(var j = 0; j < x; j++){
           cells[i][j] = [0, 0, 0, 0];
+          unvisited[i][j] = true;
         }
     }
-}(9, 9);
+
+    var currentCell= [Math.floor(Math.random() * y),
+                      Math.floor(Math.random() * x)];
+
+    var path = [currentCell];
+
+    unvisited[currentCell[0]][currentCell[1]]
+      = false;
+
+    var numOfVisited = 1;
+    while(numOfVisited < totalCells){
+      var possible =
+                  [[currentCell[0]-1], 0, 2,], [currentCell[1]+1, 1, 3], //checking if y value of neighbor cell (top) is inside the grid
+                  [currentCell[0]], [currentCell[1], 2, 0],
+                  [currentCell[0]], [currentCell[1]-1, 3, 1]];
+
+      var neighbors = [];
+      for(var l = 0; l < 4; l++){
+        if(possible[l][0] > -1 &&
+            possible[l][0] < y &&
+            possible[l][1] > -1 &&
+            possible[l][1] < x &&
+            unvisited[possible[l][0]][possible[l][1]]){
+              neighbors.push(possible[l]);
+            }
+      }
+    }
+
+}(4, 4);
