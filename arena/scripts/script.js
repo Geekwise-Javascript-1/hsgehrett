@@ -107,23 +107,84 @@ var grid = function(x, y){
     unvisited[currentCell[0]][currentCell[1]]
       = false;
 
-    var numOfVisited = 1;
-    while(numOfVisited < totalCells){
-      var possible =
-                  [[currentCell[0]-1], 0, 2,], [currentCell[1]+1, 1, 3], //checking if y value of neighbor cell (top) is inside the grid
-                  [currentCell[0]], [currentCell[1], 2, 0],
-                  [currentCell[0]], [currentCell[1]-1, 3, 1]];
-
+    var visited = 1;
+    while(visited < totalCells){
+      var possible = [
+                  [ currentCell[0]-1, currentCell[1], 0, 2 ], //checking if y value of neighbor cell (top) is inside the grid
+                  [ currentCell[0], currentCell[1]+1, 1, 3 ],
+                  [ currentCell[0]+1, currentCell[1], 2, 0 ],
+                  [ currentCell[0], currentCell[1]-1, 3, 1 ]];
       var neighbors = [];
       for(var l = 0; l < 4; l++){
         if(possible[l][0] > -1 &&
             possible[l][0] < y &&
             possible[l][1] > -1 &&
             possible[l][1] < x &&
-            unvisited[possible[l][0]][possible[l][1]]){
-              neighbors.push(possible[l]);
+            unvisited[ possible[l][0] ][ possible[l][1] ]){
+              neighbors.push( possible[l] );
             }
+
+      }
+
+      if(neighbors.length){
+        var next = neighbors[ Math.floor(Math.random() * neighbors.length) ];
+
+        cells[ currentCell[0] ][ currentCell[1] ][ next[2] ] = 1;
+        cells[ next [0] ][ next[1] ][ next[3] ] = 1;
+        unvisited[ next[0] ][ next[1] ]= false;
+
+        visited++;
+
+        currentCell = [ next[0], next [1] ];
+        path.push(currentCell);
+      }else{
+        currentCell = path.pop();
       }
     }
-
+    return cells;
 }(4, 4);
+
+var table = document.getElementById('table');
+var newBtn = document.createElement('button');
+
+var form = document.createElement('form');
+
+var label1 = document.createElement('label');
+  label1.placeholder = 'Name';
+  label1.setAttribute('for', 'name');
+var input1 = document.createElement('input');
+  input1.id = 'name';
+  input1.type = 'text';
+  input1.placeholder = "Your Name Here";
+
+var label2 = document.createElement('label');
+  label2.textContent = 'Your E-Mail'
+  label2.setAttribute('for', 'email')
+var input2 = document.createElement('input');
+  input2.id = 'email';
+  input2.type = 'email';
+  input2.placeholder = 'Your E-Mail Here';
+
+var submit = document.createElement('input');
+  submit.id = 'submit';
+  submit.type = 'submit';
+  submit.value = 'Submit';
+
+var formI1 = document.getElementById('name');
+
+var formI2 = document.getElementById('email');
+
+var formBtn = document.getElementById('submit');
+
+formBtn.addEventListener('click', function(evt){
+  alert(formI1.value + ':' + formI2.value);
+});
+
+label1.appendChild(input1);
+label2.appendChild(input2);
+form.appendChild(label1);
+form.appendChild(label2);
+form.appendChild(submit);
+form.appendChild(form);
+
+table.appendChild(form);
