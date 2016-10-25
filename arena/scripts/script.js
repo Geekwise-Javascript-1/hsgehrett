@@ -50,11 +50,34 @@ var n = document.getElementById("n");
 var e = document.getElementById("e");
 var s = document.getElementById("s");
 var w = document.getElementById("w");
+var tableHolder = document.getElementById('table');
+var maze, thisCell, exitCell, cells;
+
+function enableNorth(wall){
+  wall ? n.disabled = false : n.disabled = true;
+  console.log(wall);
+}
+function enableWest(wall){
+  wall ? w.disabled = false : w.disabled = true;
+  console.log(wall);
+}
+function enableSouth(wall){
+  wall ? s.disabled = false : s.disabled = true;
+  console.log(wall);
+}
+function enableEast(wall){
+  wall ? e.disabled = false : e.disabled = true;
+  console.log(wall);
+}
 
 n.addEventListener("click", function(evt){
   moveNorth(evt);
 });
 function moveNorth(evt){
+  statusCell(thisCell,'inactive');
+  thisCell = [thisCell[0]-1, thisCell[1]];
+  statusCell(thisCell, 'active');
+  chkWalls(cells);
   console.log(evt);
   console.log("Went North.");
 }
@@ -63,6 +86,10 @@ e.addEventListener("click", function(evt){
   moveEast(evt);
 });
 function moveEast(evt){
+  statusCell(thisCell,'inactive');
+  thisCell = [thisCell[0], thisCell[1]+1];
+  statusCell(thisCell, 'active');
+  chkWalls(cells);
   console.log(evt);
   console.log("Went East.");
 }
@@ -71,6 +98,10 @@ s.addEventListener("click", function(evt){
   moveSouth(evt);
 });
 function moveSouth(evt){
+  statusCell(thisCell,'inactive');
+  thisCell = [thisCell[0]+1, thisCell[1]];
+  statusCell(thisCell, 'active');
+  chkWalls(cells);
   console.log(evt);
   console.log("Went South.");
 }
@@ -79,16 +110,38 @@ w.addEventListener("click", function(evt){
   moveWest(evt);
 });
 function moveWest(evt){
+  statusCell(thisCell,'inactive');
+  thisCell = [thisCell[0], thisCell[1]-1];
+  statusCell(thisCell, 'active');
+  chkWalls(cells);
   console.log(evt);
   console.log("Went West.");
+}
+
+function statusCell(cell, status){
+  console.log(cell);
+  switch(status){
+    case "active":
+        maze.firstChild.childNodes[cell[0]].childNodes[cell[1]].classList.add('active');
+      break;
+    case "inactive":
+      maze.firstChild.childNodes[cell[0]].childNodes[cell[1]].classList.remove("active");
+      break;
+    case "exit":
+      maze.firstChild.childNodes[cell[0]].childNodes[cell[1]].classList.add("exit");
+      break;
+  }
+  return cell;
 }
 
 /*Grid*/
 
 var grid = function(x, y){
   var totalCells = x * y;
-  var cells = [];
-  var unvisited = [];
+  console.log(cells);
+ cells = [];
+ console.log(cells);
+   var unvisited = [];
 
     for(var i = 0; i < y; i++){
       cells[i] = [];
@@ -141,50 +194,122 @@ var grid = function(x, y){
         currentCell = path.pop();
       }
     }
-    return cells;
+    //return cells;s
+
+    gridStart(cells, path)
+
 }(4, 4);
 
 var table = document.getElementById('table');
-var newBtn = document.createElement('button');
 
-var form = document.createElement('form');
+function gridStart(cells, path){
+  gridBuilder(cells);
 
-var label1 = document.createElement('label');
-  label1.placeholder = 'Name';
-  label1.setAttribute('for', 'name');
-var input1 = document.createElement('input');
-  input1.id = 'name';
-  input1.type = 'text';
-  input1.placeholder = "Your Name Here";
+  thisCell = theCell(path[0]);
+  exitCell = leaveCell(path[path.length-1]);
+  chkWalls(cells);
+}
 
-var label2 = document.createElement('label');
-  label2.textContent = 'Your E-Mail'
-  label2.setAttribute('for', 'email')
-var input2 = document.createElement('input');
-  input2.id = 'email';
-  input2.type = 'email';
-  input2.placeholder = 'Your E-Mail Here';
+function gridBuilder(cells){
+  maze = document.createElement('table')
+  tableHolder.appendChild(maze);
+  //console.log(tableHolder);
+  for(var i = 0; i < cells.length; i++){
+    maze.insertRow(i);
+      for(var j = 0; j < cells[i].length; j++){
+        maze.firstChild.childNodes[i].insertCell(j);
+        thisCell = maze.firstChild.childNodes[i].childNodes[j];
+        for(var k = 0; k < 4; k++){
+          switch(k){
+            case 0:
+              cells[i][j][k] ?
+              thisCell.classList.remove('bt') :
+              thisCell.classList.add('bt')
+              break;
+            case 1:
+              cells[i][j][k] ?
+              thisCell.classList.remove('br') :
+              thisCell.classList.add('br')
+              break;
+            case 2:
+              cells[i][j][k] ?
+              thisCell.classList.remove('bb') :
+              thisCell.classList.add('bb')
+              break;
+            case 3:
+              cells[i][j][k] ?
+              thisCell.classList.remove('bl') :
+              thisCell.classList.add('bl')
+              break;
 
-var submit = document.createElement('input');
-  submit.id = 'submit';
-  submit.type = 'submit';
-  submit.value = 'Submit';
+        }
 
-var formI1 = document.getElementById('name');
+      }
+    }
+  }
+}
 
-var formI2 = document.getElementById('email');
+function theCell(cell){
+  maze.firstChild.childNodes[cell[0]].childNodes[cell[1]].classList.add('active');
+  return cell;
+}
 
-var formBtn = document.getElementById('submit');
+function leaveCell(cell){
+  maze.firstChild.childNodes[cell[0]].childNodes[cell[1]].classList.add('exit');
+  return cell;
+}
 
-formBtn.addEventListener('click', function(evt){
-  alert(formI1.value + ':' + formI2.value);
-});
+function chkWalls(cells){
+  // console.log(thisCell);
+  // console.log(cells);
+  var walls = cells[ thisCell[0] ][ thisCell[1] ];
+    for(var i = 0; i < 4; i++){
+      switch (i) {
+        case 0:
+          enableNorth(walls[i]);
+          break;
+        case 1:
+          enableEast(walls[i]);
+          break;
+        case 2:
+          enableSouth(walls[i]);
+          break;
+        case 3:
+          enableWest(walls[i]);
+          break;
 
-label1.appendChild(input1);
-label2.appendChild(input2);
-form.appendChild(label1);
-form.appendChild(label2);
-form.appendChild(submit);
-form.appendChild(form);
+      }
+    }
 
-table.appendChild(form);
+}
+
+var hero = {
+   name: 'Kaomi Yulai',
+   power: 100
+};
+
+var Enemy = function(name, power, pos){
+   this.name = name,
+   this.power = power
+   this.y = pos[0],
+   this.x = pos[1]
+};
+
+function randPower(min, max){
+  var power = Math.floor(Math.random() * 100) +1;
+  var range = Math.floor(Math.random() * (max - min)) + min;
+  return range;
+}
+
+function randCell(){
+ var y = Math.floor(Math.random() * cells.length);
+ var x = Math.floor(Math.random() * cells[0].length);
+ return [y, x];
+}
+
+var enemy1 = new Enemy('Scout', randPower(5, 10), randCell());
+var enemy2 = new Enemy('Soldier', randPower(10, 20), randCell());
+
+console.log(hero);
+console.log(enemy1);
+console.log(enemy2);

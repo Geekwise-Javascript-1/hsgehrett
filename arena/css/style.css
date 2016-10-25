@@ -74,6 +74,9 @@ table td.active {
 table td.visited {
     background-color: hsla(0, 0%, 0%, .5);
 }
+table td.exit {
+  background-color: red !important;
+}
 table td.bt {
     border-top-color: black;
 }
