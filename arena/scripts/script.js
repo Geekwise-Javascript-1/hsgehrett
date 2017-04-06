@@ -55,19 +55,19 @@ var maze, thisCell, exitCell, cells;
 
 function enableNorth(wall){
   wall ? n.disabled = false : n.disabled = true;
-  console.log(wall);
+  //console.log(wall);
 }
 function enableWest(wall){
   wall ? w.disabled = false : w.disabled = true;
-  console.log(wall);
+  //console.log(wall);
 }
 function enableSouth(wall){
   wall ? s.disabled = false : s.disabled = true;
-  console.log(wall);
+  //console.log(wall);
 }
 function enableEast(wall){
   wall ? e.disabled = false : e.disabled = true;
-  console.log(wall);
+  //console.log(wall);
 }
 
 n.addEventListener("click", function(evt){
@@ -77,8 +77,8 @@ function moveNorth(evt){
   statusCell(thisCell,'inactive');
   thisCell = [thisCell[0]-1, thisCell[1]];
   statusCell(thisCell, 'active');
+  encounter();
   chkWalls(cells);
-  console.log(evt);
   console.log("Went North.");
 }
 
@@ -89,8 +89,8 @@ function moveEast(evt){
   statusCell(thisCell,'inactive');
   thisCell = [thisCell[0], thisCell[1]+1];
   statusCell(thisCell, 'active');
+  encounter();
   chkWalls(cells);
-  console.log(evt);
   console.log("Went East.");
 }
 
@@ -101,8 +101,8 @@ function moveSouth(evt){
   statusCell(thisCell,'inactive');
   thisCell = [thisCell[0]+1, thisCell[1]];
   statusCell(thisCell, 'active');
+  encounter();
   chkWalls(cells);
-  console.log(evt);
   console.log("Went South.");
 }
 
@@ -113,13 +113,66 @@ function moveWest(evt){
   statusCell(thisCell,'inactive');
   thisCell = [thisCell[0], thisCell[1]-1];
   statusCell(thisCell, 'active');
+  encounter();
   chkWalls(cells);
-  console.log(evt);
   console.log("Went West.");
 }
 
+/*Monsters*/
+
+var monsters = [];
+var monTypes = ["Soldier", "Scout", "Demoman", "Medic", "Sniper", "Spy", "Pyro", "Heavy", "Engineer"];
+
+function Monsters(name, hp){
+  this.name = name,
+  this.hp = hp
+}
+
+function generateMonsters(){
+  var totalMon = Math.round(Math.random() * 10);
+  console.log(totalMon);
+
+  for(var i = 0; i < totalMon; i++){
+    monsters[i] = new Monsters();
+    monsters[i].name = monTypes[Math.floor(Math.random() *
+      monTypes.length)];
+    if(monsters[i].name == "Scout" || monsters[i].name == "Sniper" || monsters[i].name ==  "Spy" || monsters[i].name ==  "Engineer"){
+      monsters[i].hp = 5;
+    }else if(monsters[i].name == "Medic"){
+      monsters[i].hp = 6;
+    }else if(monsters[i].name == "Demoman" || monsters[i].name == "Pyro"){
+      monsters[i].hp = 7;
+    }else if(monsters[i].name == "Soldier"){
+      monsters[i].hp = 8;
+    }else if(monsters[i].name == "Heavy"){
+      monsters[i].hp = 12;
+    }
+  console.log(monsters);
+  }
+}
+generateMonsters();
+
+/*Hero*/
+
+if(!localStorage.getItem("hero")){
+  var hero = {
+    name: prompt("What's your name?"),
+    hp: 50
+  };
+  localStorage.setItem("hero", JSON.stringify(hero));
+}else{
+  var hero = JSON.parse(localStorage.getItem("hero"));
+}
+
+
+/*Cells*/
+
 function statusCell(cell, status){
   console.log(cell);
+  if (maze.firstChild.childNodes[cell[0]].childNodes[cell[1]].classList.contains("exit")){
+    alert("You've made it!");
+    location.reload();
+  }
   switch(status){
     case "active":
         maze.firstChild.childNodes[cell[0]].childNodes[cell[1]].classList.add('active');
@@ -133,6 +186,22 @@ function statusCell(cell, status){
   }
   return cell;
 }
+
+/*keypress*/
+
+addEventListener("keypress", function(evt){
+  evt.preventDefault();
+  console.log(evt);
+  if(evt.keyCode === 38 && !n.disabled){
+    moveNorth();
+  }else if(evt.keyCode === 39 && !e.disabled){
+    moveEast();
+  }else if(evt.keyCode === 40 && !s.disabled){
+    moveSouth();
+  }else if(evt.keyCode === 37 && !w.disabled){
+    moveWest();
+  }
+});
 
 /*Grid*/
 
@@ -198,7 +267,7 @@ var grid = function(x, y){
 
     gridStart(cells, path)
 
-}(4, 4);
+}(11, 11);
 
 var table = document.getElementById('table');
 
@@ -283,7 +352,53 @@ function chkWalls(cells){
 
 }
 
-var hero = {
+/*Encounter*/
+
+function encounter(){
+  var percEnc = Math.round(monsters.length /
+    (cells.length * cells[0].length) * 100);
+  console.log(percEnc + "% chance of running into a member of RED!");
+  var chanceEnc = Math.ceil(Math.random() * 100);
+  //console.log(chanceEnc);
+  var monsterEnc = Math.floor(Math.random() * monsters.length);
+    if(chanceEnc <= percEnc){
+      //console.log("A member of the RED team stands in your path!")
+      console.log(monsters.splice(monsterEnc, 1));
+      battle(monsters.splice(monsterEnc, 1));
+    }
+}
+
+function battle(monster){
+  console.log(monster[0]);
+  console.log(monster[0].name);
+  console.log(monster[0].hp);
+  alert("You ran into a RED "+monster[0].name+"!!");
+  while(monster[0].hp > 0 && hero.hp > 0){
+    var damage = Math.ceil(monster[0].hp / 3);
+    hero.hp -= damage;
+    if(hero.hp <= 0){
+      alert("My professional opinion? You're dead!");
+      location.reload();
+    }
+    alert("You've taken "+damage+" damage from combat!");
+    playerAction(monster);
+    if(monster[0].hp <= 0){
+      alert("The member of RED has died.");
+      break;
+    }
+  }
+}
+
+function playerAction(monster){
+ console.log(monster);
+ var damage = Math.ceil(hero.hp / );
+ console.log(monster[0].hp);
+ monster[0].hp -= damage;
+ console.log(monster[0].hp);
+ alert("You shot the RED member for "+damage+"!!");
+}
+
+/*var hero = {
    name: 'Kaomi Yulai',
    power: 100
 };
@@ -310,6 +425,36 @@ function randCell(){
 var enemy1 = new Enemy('Scout', randPower(5, 10), randCell());
 var enemy2 = new Enemy('Soldier', randPower(10, 20), randCell());
 
-console.log(hero);
-console.log(enemy1);
-console.log(enemy2);
+// console.log(hero);
+// console.log(enemy1);
+// console.log(enemy2);
+
+if(!localStorage.getItem("username") &&
+  !localStorage.getItem("lastname")){
+    var name = prompt("What's your name, Stranger?");
+    var lname = prompt("And your family name?");
+    var password = prompt("Make a Password?");
+    setLoginStorage();
+  }else{
+    alert("Welcome back, " + localStorage.getItem("username"));
+  }
+
+function setLoginStorage(){
+  localStorage.setItem("username", name);
+  localStorage.setItem("lastname", lname);
+  sessionStorage.setItem("hero", hero);
+  sessionStorage.setItem("enemies", enemy1, enemy2);
+  sessionStorage.setItem("password", password);
+}
+
+if(!localStorage.getItem("hero"));{
+  setCharStorage();
+}
+
+function setCharStorage(){
+  localStorage.setItem("hero", JSON.stringify(hero));
+  sessionStorage.setItem("enemy1", JSON.stringify(enemy1));
+  sessionStorage.setItem("enemy2", JSON.stringify(enemy2));
+}
+
+setLoginStorage();*/
